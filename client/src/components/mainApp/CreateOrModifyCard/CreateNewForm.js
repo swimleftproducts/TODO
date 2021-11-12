@@ -41,7 +41,7 @@ const CreateNewForm= (props) => {
             let imgKey=""
             if(file){ 
               const fileType = file.type.split('/')[1]
-              const uploadConfig = await  axios.get(`http://localhost:4002/api/getpresignedurl/${fileType}`, { withCredentials: true})
+              const uploadConfig = await  axios.get(`/api/getpresignedurl/${fileType}`, { withCredentials: true})
   
               imgKey = uploadConfig.data.key
                       

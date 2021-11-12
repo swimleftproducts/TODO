@@ -6,7 +6,7 @@ module.exports={
         return  input.map(element=>{
         //for when first created and supplying stock images
         if(element.imageUrl==="newuser"){
-            element.imageUrl="http://localhost:3000/hithere.jpeg"
+            element.imageUrl="/hithere.jpeg"
             return element
         }
         element.imageUrl = `https://${process.env.BUCKET_NAME}${process.env.AWS_ADDRESS}${element.imageUrl}`
