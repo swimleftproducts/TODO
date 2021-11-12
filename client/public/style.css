@@ -1,0 +1,424 @@
+html, body {
+    height:100%;
+    width: 100%;
+}
+
+#root{
+  height:100%;
+  width: 100%;
+
+}
+.btn:focus,
+.btn:active {
+  box-shadow: none;
+}
+
+.landing-bg{
+  background-color: rgb(160, 235, 160) ;
+  height: 100%;
+  width: 100%;
+}
+  
+
+.landing-block{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 165px; 
+  height:120px;
+  background-color: rgb(158, 177, 221);
+} 
+
+.landing-title{
+  color:rgb(46, 66, 114);
+  text-align: center;
+  font-weight: 600;
+  font-size: 3rem;
+  line-height: 30px;
+  height: 30px;
+  width:100%;
+  position: absolute;
+  top:20px;
+}
+
+
+.landingLink2{
+  text-align: right;
+  font-weight: 200;
+  font-size: 1.5rem;
+  line-height: 30px;
+  height: 30px;
+  position: absolute;
+  bottom:-6px;
+  right:0px;
+  padding: 0px 0px 0px 0px !important;
+  margin: 0px 0px 0px 0px !important;
+  width:90px;
+}
+
+.landingLink1{
+  text-align: right;
+  font-weight: 200;
+  font-size: 1.5rem;
+  line-height: 30px;
+  height: 30px;
+  width:90px;
+  position: absolute;
+  bottom:25px;
+  right:0px;
+ 
+  padding: 0px 0px 0px 0px !important;
+  margin: 0px 0px 0px 0px !important;
+}
+
+.landingLink1:hover,.landingLink2:hover{
+  background-color: rgb(160, 235, 160) ;
+  color:rgb(46, 66, 114) !important;
+}
+
+.navbar-custom{
+background-color:rgb(46,66,114);
+}
+
+.navbar-text{
+  color: white !important;
+}
+
+.nav-bottom-button{
+  color: white !important;
+  background-color: rgb(46,66,114);
+  border:white 1px solid;
+  width:100px;
+}
+.nav-bottom-button-active{
+  color: rgb(46,66,114) !important;
+  background-color:rgb(133, 136 ,136) !important;
+}
+.nav-bottom-button:hover{
+  color: black !important;
+  background-color: rgb(133, 136 ,136);
+  border:white 1px solid;
+  width:100px;
+}
+.nav-top-button{
+  color: white !important;
+  background-color: rgb(46,66,114);
+  border:white 1px solid;
+  width:100%;
+}
+.nav-top-button:hover{
+  color: black !important;
+  background-color: rgb(133, 136 ,136);
+  border:white 1px solid;
+ 
+}
+.under-the-hood{
+  background-color: rgb(160, 235, 160);
+  position:fixed;
+  z-index: 10;
+  left:0px;
+  top:0px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 35px;
+  height: 35px;
+  width:100px;
+}
+.under-the-hood-light{
+  z-index: 10;
+  
+}
+.todo-modal{
+  z-index: 7;
+  background-color: rgba(0, 0, 0,.5);
+  position:fixed;
+  left:0px;
+  top:0px;
+  width:100%;
+  height: 100%; 
+}
+.modal-content{
+  position:fixed;
+  left: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+  width:300px !important;
+  height:450px;
+  background-color: rgb(128,128  ,128);
+  max-height: 750px !important;
+}
+
+.organizebar-custom{
+  background-color:rgb(196,196,196) !important;
+  position: fixed !important;
+  right: 0;
+  bottom: 60px !important;
+  left: 0;
+  z-index: 1030;
+  
+  
+}
+
+
+.general-background{
+  background-color: rgb(128,128  ,128) ;
+  min-height: 100%;
+  width: 100%;
+}
+
+.sign-in-block{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width:450px !important;
+  background-color: rgb(160, 235, 160);
+  max-height: 750px !important;
+}
+
+.sign-in-text{
+  font-size: 1.5rem;
+}
+
+.input-field{
+  font-size: 1.5rem;
+  width: 100%;
+  border: none !important;
+}
+
+.create-new-textarea{
+  max-height: 150px;
+  font-size:1rem;
+}
+
+.error-text{
+  font-size: 1rem !important;
+  color:salmon !important;
+
+}
+
+.btn-primary{
+  border-radius: 0 !important;
+  background-color: rgb(46, 66, 114) !important;
+  border: none !important;
+}
+
+.submit-btn{
+  width:75% !important;
+}
+
+.submit-btn:hover{
+  background-color: rgb(158,177,221)!important ;
+  color:rgb(white) !important;
+  border: none !important;
+}
+.delete-btn{
+  width:75% !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+.delete-btn:hover{
+  background-color: lightcoral !important ;
+  border: none !important;
+}
+.register-btn {
+  background-color: rgb(250,254,250) !important;
+  color:black !important;
+  width:75% !important;
+}
+.register-btn:hover{
+  background-color: rgb(158,177,221)!important ;
+  color:rgb(white) !important;
+}
+
+
+.todo-card{
+  height:200px;
+  min-width:250px;
+  background-color: transparent;
+  border: 1 px black solid;
+  position: relative;
+}
+
+.todo-card-full-detail{
+  height:400px;
+  min-width:250px;
+  background-color: transparent;
+  border: 1 px black solid;
+  position: relative;
+}
+
+.card{
+  height: 100%; 
+  background-color: transparent !important;
+  border:none!important;
+}
+
+.card-img-top{
+ 
+  width:100% !important;
+  height:180px!important;
+}
+
+.card-img-top-detail{
+ 
+  width:100% !important;
+  height:180px !important;
+}
+
+
+
+.todo-card-info{
+  background-color: transparent;
+  position:absolute;
+  top:158px;
+  width: 234px !important;
+  height:2rem;
+}
+
+.todo-card-info-detail{
+  background-color: rgb(196,196,196);
+  height:200px;
+  width: 230px !important ;
+  top:185px;
+  position: absolute;
+  text-align: center;
+}
+
+.todo-card-title{
+  background-color: transparent;
+  position:absolute;
+  top:158px;
+  left:0px;
+  width: 234px;
+  height:2rem;
+  z-index: 6;
+ 
+}
+
+
+.todo-progressbar {
+  padding: 2px;
+  width: 100%;
+  max-width: 500px;
+ 
+  height: 30px;
+  background-color: rgb(196,196,196) ;
+}
+
+.todo-progress__bar {
+  height: 100%;
+  width: 50%;
+  background-color: rgb(160, 235, 160);
+ 
+}
+
+.todo-icon{
+  font-size: 1.25rem;
+  line-height: 30px;
+  height: 30px;
+  vertical-align: middle
+}
+
+.todo-icon-edit{
+  background-color: rgba(255 ,255, 255, .5);
+  text-align: center;
+  width:40px;
+  height:2rem;
+  position:absolute !important;
+  top:8px !important;
+  right:8px !important;
+  font-size: 1.25rem;
+  z-index: 5;
+  border-radius: 0px 0px 0px 10px ;
+}
+
+.todo-text-title{
+  line-height: 30px;
+  height: 30px;
+}
+
+.todo-progress-button{
+  height:100%
+}
+
+.todo-progress-button:hover{
+  opacity: 0.4;
+}
+
+.test-wrapper {
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,250px);
+  gap:0px;
+  grid-auto-rows: 200px;
+  justify-content: center;
+  margin-bottom: 80px;
+  
+}
+
+.todo-card-completed{
+  filter: brightness(50%)
+}
+
+.test-box{
+  background-color:none;
+  grid-row-end: span 2;
+}
+
+.nb-todo-card{
+  height:200px;
+  min-width:250px;
+  background-color: transparent;
+  border: 1 px black solid !important;
+  position: relative;
+}
+
+.nb-todo-icon-edit{
+  background-color: rgba(255 ,255, 255, .5);
+  text-align: center;
+  width:40px;
+  height:2rem;
+  position:relative !important;
+  top:0px !important;
+  right:0px !important;
+  font-size: 1.25rem;
+  z-index: 8;
+  border-radius: 0px 0px 0px 10px ;
+}
+
+.nb-todo-card-detail{
+  background-color:none;
+  grid-row-end: span 2;
+  height:400px;
+  min-width:250px;
+  background-color: transparent;
+  border: 1 px black solid;
+  position: relative;
+}
+
+.nb-todo-card-detail-content{
+  background-color: rgb(196,196,196);
+  height:200px;
+  width: 234px !important ;
+  top:188px;
+  position: absolute;
+  text-align: center;
+}
+
+.edit-account-block{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width:600px !important;
+  background-color: rgb(160, 235, 160);
+  max-height: 750px !important;
+}
+
+.image-upload{
+  font-size: 1rem;
+  background-color: white;
+}
+
