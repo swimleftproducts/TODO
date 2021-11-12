@@ -40,7 +40,7 @@ const EditTodoForm= (props) => {
     return (
        todo?
       <Formik
-        initialValues={{ title:todo.title,type:todo.type,numberSteps:todo.numberSteps, details:todo.details}}
+        initialValues={{ title:todo.title,type:todo.type,numberSteps:todo.numberSteps, details:todo.details,image:todo.image}}
 
         validationSchema={Yup.object({
           title: Yup.string()
@@ -59,7 +59,7 @@ const EditTodoForm= (props) => {
                   if(file){ 
                    
                     const fileType = file.type.split('/')[1]
-                    const uploadConfig = await  axios.get(`http://localhost:4002/api/getpresignedurl/${fileType}`, { withCredentials: true})
+                    const uploadConfig = await  axios.get(`/api/getpresignedurl/${fileType}`, { withCredentials: true})
                     imgKey = uploadConfig.data.key
                     await axios.put (uploadConfig.data.url,file,{
                     headers:{
