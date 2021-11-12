@@ -14,7 +14,7 @@ module.exports={
         })
     }else{
         if(input.imageUrl==="newuser"){
-           input.imageUrl="http://localhost:3000/hithere.jpeg"
+           input.imageUrl="/hithere.jpeg"
             return input
         }
         input.imageUrl = `https://${process.env.BUCKET_NAME}${process.env.AWS_ADDRESS}${input.imageUrl}`
