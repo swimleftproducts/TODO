@@ -8,7 +8,7 @@ module.exports= (app) => {
     
     //setup routes
 
-    app.get('/', setupController.helloworld)
+    
 
     app.get('/test/amIauth',setupController.authorized)
 
