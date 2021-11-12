@@ -9,7 +9,7 @@ import { userActions } from "./userActions";
 const login = (formData)=>async(dispatch)=>{
     
     try{
-        const User = await axios.post('http://localhost:4002/api/login',formData,
+        const User = await axios.post('/api/login',formData,
        { withCredentials: true })
        
        if(User.data.authenticated){
@@ -29,7 +29,7 @@ const login = (formData)=>async(dispatch)=>{
 const register = (formData)=>async(dispatch)=>{
     console.log(formData)
     try{
-        const newUser = await axios.post('http://localhost:4002/api/register',formData,
+        const newUser = await axios.post('/api/register',formData,
        { withCredentials: true })
         console.log(newUser)
         if(newUser.data.authenticated){
@@ -46,7 +46,7 @@ const register = (formData)=>async(dispatch)=>{
 const isAuthenticated = ()=>async(dispatch)=>{
    console.log('in isAuthenticated')
     try{
-        const authStatus = await axios.get('http://localhost:4002/api/isauthenticated',
+        const authStatus = await axios.get('/api/isauthenticated',
        { withCredentials: true })
         
         if(authStatus.data.authenticated){
@@ -65,7 +65,7 @@ const isAuthenticated = ()=>async(dispatch)=>{
 const logout = ()=> async (dispatch)=>{
     try{
        console.log('inlogout')
-        await axios.post('http://localhost:4002/api/logout',{},
+        await axios.post('/api/logout',{},
        { withCredentials: true })
         dispatch(userActions.clearUser())
         dispatch({type:authConstants.logout,payload:false}) 

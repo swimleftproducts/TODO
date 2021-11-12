@@ -15,7 +15,7 @@ const clearUser = ()=>async(dispatch)=>{
 
 const createTodo = (formData,userId,setShowCreate) => async(dispatch) => {
     try{
-        const response = await axios.post('http://localhost:4002/api/create',formData,
+        const response = await axios.post('/api/create',formData,
        { withCredentials: true })
     if(response.data.error){
         alert(response.data.error)
@@ -41,7 +41,7 @@ const editTodo = (formData,id) => async(dispatch) => {
    }
     try{
         console.log("in edit todo", body)
-        const User = await axios.put('http://localhost:4002/api/edit',body,
+        const User = await axios.put('/api/edit',body,
        { withCredentials: true })
         console.log("in edit user", User)
     if(User.data.error){
@@ -63,7 +63,7 @@ try{
         console.log('no update')
         history.push('/')
     }
-    const User = await axios.put('http://localhost:4002/api/user/edit',{id:userId,name,email,password},
+    const User = await axios.put('/api/user/edit',{id:userId,name,email,password},
     { withCredentials: true })
     console.log("returned User ",User)
     if(User.data.error){
@@ -79,7 +79,7 @@ try{
 
 const changeProgress =(direction,id) =>async (dispatch)=> {
     try{
-        const User = await axios.put('http://localhost:4002/api/progress',{id, direction},{ withCredentials: true })
+        const User = await axios.put('/api/progress',{id, direction},{ withCredentials: true })
         dispatch({type:userConstants.setUser,payload:User.data.user})
         history.push('/homepage')
     }catch(err){
@@ -89,7 +89,7 @@ const changeProgress =(direction,id) =>async (dispatch)=> {
 
 const deleteUser = (id) => async(dispatch)=>{
     try{
-        const Confirm = await axios.delete('http://localhost:4002/api/user/delete/'+id,{ withCredentials: true })
+        const Confirm = await axios.delete('/api/user/delete/'+id,{ withCredentials: true })
         if(Confirm.data.deleted){
             dispatch({type:userConstants.clearUser,payload:{}})
             dispatch({type:authConstants.logout,payload:false}) 
@@ -104,7 +104,7 @@ const deleteUser = (id) => async(dispatch)=>{
 
 const deleteTodo =(id) =>async (dispatch)=>{
     try{
-        const Confirm = await axios.delete('http://localhost:4002/api/delete/'+id,{ withCredentials: true })
+        const Confirm = await axios.delete('/api/delete/'+id,{ withCredentials: true })
         if(Confirm.data.deleted){
             dispatch({type:userConstants.setUser,payload:Confirm.data.user})
          
@@ -120,7 +120,7 @@ const deleteTodo =(id) =>async (dispatch)=>{
 
 const organizeTodos = (method,direction) =>async (dispatch)=>{
     try{
-        const {data} = await axios.get(`http://localhost:4002/api/todos/${method}/${direction||1}`,{ withCredentials: true })
+        const {data} = await axios.get(`/api/todos/${method}/${direction||1}`,{ withCredentials: true })
         
         dispatch({type:userConstants.setTodos,payload:data})
     }catch(err){
