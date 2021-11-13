@@ -27,6 +27,30 @@ const userReducer = (state={},action)=>{
             return  {...state, todos:action.payload}
         case userConstants.addTodo:
             return {...state,todos:[...state.todos,action.payload]}
+        case userConstants.changeProgress:  
+            let newState={}       
+            const newTodos= state.todos.map((todo) => {
+                const {direction,id}=action.payload
+                if(todo._id===id){
+                    if(todo.completeSteps===0 && direction===0){
+                    }else if(todo.completeSteps===todo.numberSteps && direction===1){                        
+                    }else{
+                      if(direction){
+                          todo.completeSteps=todo.completeSteps+1
+                          if(todo.completeSteps===todo.numberSteps){
+                              todo.completed=true
+                          }
+                      }else{
+                          todo.completeSteps=todo.completeSteps-1
+                          todo.completed=false
+                      }                        
+                    }
+                }
+                return todo
+            })
+            
+            newState= {...state,todos:newTodos}
+            return newState
         default:
             return state
     }

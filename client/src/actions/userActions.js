@@ -79,8 +79,12 @@ try{
 
 const changeProgress =(direction,id) =>async (dispatch)=> {
     try{
-        const User = await axios.put('/api/progress',{id, direction},{ withCredentials: true })
-        dispatch({type:userConstants.setUser,payload:User.data.user})
+        // const User = await axios.put('/api/progress',{id, direction},{ withCredentials: true })
+        axios.put('/api/progress',{id, direction},{ withCredentials: true })
+        
+        dispatch({type:userConstants.changeProgress,payload:{direction,id}})
+        // dispatch({type:userConstants.setUser,payload:User.data.user})
+        
         history.push('/homepage')
     }catch(err){
         console.log(err)

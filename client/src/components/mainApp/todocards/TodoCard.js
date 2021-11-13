@@ -1,15 +1,18 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { connect } from 'react-redux';
 
 import ProgressBar from './ProgressBar.js'
 import {userActions} from '../../../actions/userActions'
 
 function TodoCard(props) {
-    // eslint-disable-next-line no-unused-vars
+    
    
     // eslint-disable-next-line no-unused-vars
     let {_id,title,type,numberSteps,completeSteps,imageUrl,completed,details}=props.config
-   
+    
+    useEffect(() => {
+        console.log("todorendered")
+    },[])
     
     
     const editTodo =() => {

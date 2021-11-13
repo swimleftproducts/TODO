@@ -20,26 +20,28 @@ const EditTodoForm= (props) => {
     useEffect((params) => {
         const id=props.id
         const todos=props.todos;
-       
+        
         todos.forEach((element) => {
-            
+         
             if(element._id===id){
              // eslint-disable-next-line react-hooks/exhaustive-deps
-              let title=element.title || ""
-              let type=element.type || ""
-              let numberSteps=element.numberSteps || ""
-              let details=element.details || ""
-              let image=element.imageUrl || ""
-            setTodo({title,type,numberSteps,details,image,id:element._id})
+              let title=element.title 
+              let type=element.type 
+              let numberSteps=element.numberSteps 
+              let details=element.details 
+              let image=element.imageUrl
+              let completeSteps=element.completeSteps
+            setTodo({title,type,numberSteps,completeSteps,details,image,id:element._id})
             }
         })
 
     },[])
 
-       
+   
     return (
        todo?
       <Formik
+        enableReinitialize={ true}
         initialValues={{ title:todo.title,type:todo.type,numberSteps:todo.numberSteps, details:todo.details,image:todo.image}}
 
         validationSchema={Yup.object({
@@ -48,7 +50,8 @@ const EditTodoForm= (props) => {
           type: Yup.string()
               .max(15, 'must be 15 characters or less'),           
           numberSteps: Yup.number()
-                .max(5,'5 or less'),
+                .min(todo.completeSteps,"cannot be less than done")
+                .max(5,`max 5`),
           details: Yup.string()    
         })}
         onSubmit={async (values, { setSubmitting }) => {

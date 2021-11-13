@@ -8,5 +8,6 @@ export const userConstants = {
     changeProgress:"CHANGE_PROGRESS",
     deleteUser:"DELETE_USER",
     setTodos:"SET_TODOS",
-    addTodo:"ADD_TODO"
+    addTodo:"ADD_TODO",
+    
 }
