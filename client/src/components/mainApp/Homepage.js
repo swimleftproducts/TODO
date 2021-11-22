@@ -9,13 +9,23 @@ import CreateNew from './CreateOrModifyCard/CreateNew';
 import EditTodo from './CreateOrModifyCard/EditTodo';
 import TodoCardDashboard from './todocards/TodoCardDashboard';
 import EditAccount from './editAccount/EditAccount';
+    
+import { modalConstants } from '../../constants/modalConstants';
+import { modalActions } from '../../actions/modalActions';
 
 function Homepage(props) {
     const [showCreate,setShowCreate]= useState(false)
     const [showEdit,setShowEdit]= useState({})
     const [showAccount,setShowAccount] =useState(false)
+    const {setPage} = props
 
-   
+    useEffect(() => {
+        setPage(modalConstants.pages.homepage)
+        return (() => {
+            setPage(modalConstants.pages.homepage)
+      })    
+    },[setPage])
+
     
 
     const renderContents= ()=>{
@@ -34,17 +44,18 @@ function Homepage(props) {
     }
     
     return (
-        <div id="mainArea" className="general-background mx-0 my-0 "
+        <div id="mainArea" className="general-background mx-0 my-0 main-padding-top "
         onClick={(e) => {
           if(e.target.id==="mainArea"){
               setShowEdit(false)
               setShowCreate(false)
+              setShowAccount(false)
           }
         }}>
-            <NavTop setShowAccount={setShowAccount} showAccount={showAccount}/>
+            <NavTop setShowAccount={setShowAccount} showAccount={showAccount} setShowEdit={setShowEdit} setShowCreate={setShowCreate}/>
            
-            <div className="container-fluid  row mx-0 my-3 p-0">
-                <div className="row justify-content-center my-0 mx-0 p-0">
+            <div className="container-fluid  row mx-0 my-3 p-0  ">
+                <div className="row justify-content-center my-0 mx-0 p-0 ">
                  {renderContents()} 
                 </div>
             </div>
@@ -61,7 +72,8 @@ function mapPropsToState(state){
 }
 const actionCreators={
     logout:authActions.login,
-    isAuthenticated:authActions.isAuthenticated
+    isAuthenticated:authActions.isAuthenticated,
+    setPage:modalActions.setPage 
 } 
 
 export default connect(mapPropsToState,actionCreators)(Homepage)

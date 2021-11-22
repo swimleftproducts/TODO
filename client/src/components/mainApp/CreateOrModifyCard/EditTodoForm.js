@@ -8,6 +8,9 @@ import { connect } from 'react-redux';
 import {userActions} from '../../../actions/userActions'
 
 import TextError from '../../authentication/TextError';
+import { modalConstants } from '../../../constants/modalConstants';
+import { modalActions } from '../../../actions/modalActions';
+
 
 const EditTodoForm= (props) => {
     const [todo, setTodo] = useState({})
@@ -16,6 +19,8 @@ const EditTodoForm= (props) => {
     const onFileChange = (e)=>{
      setFile(e.target.files[0])
     }
+
+    const {setPage} = props
 
     useEffect((params) => {
         const id=props.id
@@ -35,7 +40,14 @@ const EditTodoForm= (props) => {
             }
         })
 
-    },[])
+       
+
+        setPage(modalConstants.pages.editTodo)
+        return (() => {
+          setPage(modalConstants.pages.homepage)
+        })    
+        
+    },[setPage])
 
    
     return (
@@ -56,28 +68,7 @@ const EditTodoForm= (props) => {
         })}
         onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(false);  
-            const uploadImage =async ()=>{
-                try{
-                  let imgKey=""
-                  if(file){ 
-                   
-                    const fileType = file.type.split('/')[1]
-                    const uploadConfig = await  axios.get(`/api/getpresignedurl/${fileType}`, { withCredentials: true})
-                    imgKey = uploadConfig.data.key
-                    await axios.put (uploadConfig.data.url,file,{
-                    headers:{
-                        'Content-Type':file.type
-                   }})
-                  }
-                  return {imgKey}
-                }catch(err){
-                  return err
-                }         
-              }
-              
-              const{imgKey} =await uploadImage()
-              values.imgKey=imgKey
-              props.editTodo(values,todo.id)
+            props.editTodo(values,todo.id,props.setShowEdit,file)
         }}
       >
         <Form className='m-4'>
@@ -144,7 +135,8 @@ const EditTodoForm= (props) => {
       }
   }
   const actionCreators={
-      editTodo:userActions.editTodo,
+    setPage:modalActions.setPage ,
+    editTodo:userActions.editTodo,
       
   } 
   

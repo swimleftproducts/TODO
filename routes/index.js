@@ -3,6 +3,7 @@
 const apiController = require('../controllers/apiController.js')
 const setupController =require('../controllers/setupController.js')
 
+const ApiError = require('../errorhandling/ApiError')
 
 module.exports= (app) => {
     
@@ -56,7 +57,7 @@ module.exports= (app) => {
         if(req.isAuthenticated()){
            return next()
         }
-        console.log(req.user)
-        res.json({error:"access not permited"})
+        next(ApiError.noPermission('your session expired, please login', "Error occured in authentication middleware",2000))
+        
     }
 }

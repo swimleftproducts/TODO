@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
@@ -8,6 +8,14 @@ import {userActions} from '../../../actions/userActions'
 
 import TextError from '../../authentication/TextError';
 
+import { modalConstants } from '../../../constants/modalConstants';
+import { modalActions } from '../../../actions/modalActions';
+
+import { errorActions } from "../../../actions/errorActions";
+import { errorConstants } from "../../../constants/errorConstants";
+
+
+import { s3Helpers } from '../../../helpers/s3Helpers';
 
 const CreateNewForm= (props) => {
  const [file,setFile]= useState()
@@ -15,6 +23,15 @@ const CreateNewForm= (props) => {
  const onFileChange = (e)=>{
   setFile(e.target.files[0])
  }
+
+ const {setPage} = props
+
+ useEffect(() => {
+  setPage(modalConstants.pages.create)
+  return (() => {
+      setPage(modalConstants.pages.homepage)
+})    
+},[setPage])
 
   return (
     <Formik
@@ -27,39 +44,15 @@ const CreateNewForm= (props) => {
             .max(15, 'must be 15 characters or less')
             .required('required'),
         numberSteps: Yup.number()
-              .max(5,'5 or less'),
+              .max(5,'5 or less')
+              .min(1,"at least 1 step"),
 
         details: Yup.string()
             .required("please provide details")
       })}
-      onSubmit={async (values, { setSubmitting }) => {
+      onSubmit={async  (values, { setSubmitting }) => {
         setSubmitting(false);
-        //call code to get presigned url, to upload file and then return url for saving   
-        
-        const uploadImage =async ()=>{
-          try{
-            let imgKey=""
-            if(file){ 
-              const fileType = file.type.split('/')[1]
-              const uploadConfig = await  axios.get(`/api/getpresignedurl/${fileType}`, { withCredentials: true})
-  
-              imgKey = uploadConfig.data.key
-                      
-              await axios.put (uploadConfig.data.url,file,{
-              headers:{
-                  'Content-Type':file.type
-             }})
-            }
-            
-            return {imgKey}
-          }catch(err){
-            return err
-          }         
-        }
-        
-        const{imgKey} =await uploadImage()
-        values.imgKey=imgKey
-        props.createTodo(values,null,props.setShowCreate)
+        props.createTodo(values,null,props.setShowCreate,file)
       }}
     >
       <Form className='m-4'>
@@ -126,7 +119,10 @@ function mapPropsToState(state){
     return{}
 }
 const actionCreators={
-    createTodo:userActions.createTodo
+    createTodo:userActions.createTodo,
+    setPage:modalActions.setPage, 
+    errorAction: errorActions.errorActionCreator
+
 } 
 
 export default connect(mapPropsToState,actionCreators)(CreateNewForm)

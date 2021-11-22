@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -7,8 +7,22 @@ import {authActions} from '../../actions'
 import { Link } from 'react-router-dom'
 import TextError from './TextError';
 
+import { modalConstants } from '../../constants/modalConstants';
+import { modalActions } from '../../actions/modalActions';
+
 
 const SignupForm = (props) => {
+
+  const {setPage} = props
+
+  useEffect((params) => {
+    setPage(modalConstants.pages.register)
+    return (() => {
+      setPage(modalConstants.pages.landing)
+  })    
+  },[setPage])
+
+
   return (
     <Formik
       initialValues={{ name:"", email: '',password:"" }}
@@ -40,7 +54,7 @@ const SignupForm = (props) => {
              <Field  className="input-field" name="email" type="text" />
              <div className="container-fluid p-0 m-0 row justify-content-between">
                 <label className="sign-in-text p-0 col-3"  htmlFor="email">email</label>
-                <ErrorMessage component={TextError} name="username" />
+                <ErrorMessage component={TextError} name="email" />
             </div>  
           
         </div>
@@ -73,7 +87,8 @@ function mapPropsToState(state){
     return{auth:state.auth}
 }
 const actionCreators={
-    register:authActions.register
+    register:authActions.register,
+    setPage:modalActions.setPage 
 } 
 
 export default connect(mapPropsToState,actionCreators)(SignupForm)

@@ -9,14 +9,9 @@ function TodoCard(props) {
    
     // eslint-disable-next-line no-unused-vars
     let {_id,title,type,numberSteps,completeSteps,imageUrl,completed,details}=props.config
-    
-    useEffect(() => {
-        console.log("todorendered")
-    },[])
-    
-    
+        
     const editTodo =() => {
-        console.log('triggered edit')
+        
         props.setShowEdit({id:_id})
     }
     return (

@@ -1,13 +1,25 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+
+import { connect } from 'react-redux';
+
 import TextError from '../../authentication/TextError';
+import { modalConstants } from '../../../constants/modalConstants';
+import { modalActions } from '../../../actions/modalActions'
 
-
-export default function EditAccountForm(props) {
-    const {editUser,deleteUser,user}=props
+function EditAccountForm(props) {
+    const {setPage,editUser,deleteUser,user}=props
    
+
+    useEffect(() => {
+      setPage(modalConstants.pages.editUser)
+      return (() => {
+        setPage(modalConstants.pages.homepage)
+      })
+    },[setPage])
+    
     return (
         <Formik
         initialValues={{ name:user.name,email:"",emailConf:"", password:"",passwordConf:""}}
@@ -81,3 +93,11 @@ export default function EditAccountForm(props) {
       </Formik>
     )
 }
+
+function mapPropsToState(state){
+  return{}
+}
+const actionCreators={
+  setPage:modalActions.setPage
+} 
+export default connect(mapPropsToState,actionCreators)(EditAccountForm)

@@ -8,7 +8,7 @@ import { userActions } from '../../../actions/userActions'
 export const EditAccount = (props) => {
     
     return (
-        <div className="edit-account-block" >
+        <div className={`edit-account-block ${props.modal?"edit-account-block-modal":null}`} >
             <div className=" ">
                 <EditAccountForm editUser={props.editUser} deleteUser={props.deleteUser} user={props.user}/>  
                     <hr></hr>
@@ -23,7 +23,8 @@ export const EditAccount = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-       user:state.user
+       user:state.user,
+       modal:state.modal.show
 })
 
 const mapDispatchToProps = {    

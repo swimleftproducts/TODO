@@ -1,13 +1,22 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { connect } from 'react-redux';
 import {userActions} from '../../../actions/userActions'
 
+import { modalConstants } from '../../../constants/modalConstants';
+import { modalActions } from '../../../actions/modalActions'
+
+
 function OrganizeMenu(props) {
-    const {setActive, active, organizeTodos} = props
-   
+    const {setPage, setActive, active, organizeTodos} = props
+    
+    useEffect(() => {
+        setPage(modalConstants.pages.organize)
+        return (() => {
+            setPage(modalConstants.pages.homepage)
+        })    
+    }, [setPage])
 
     const clickHandler = (e) =>{
-            console.log(active)
             let direction =1
             if(active.direction===1){
                 direction=-1
@@ -42,6 +51,7 @@ function mapPropsToState(state){
     return{}
 }
 const actionCreators={
-    organizeTodos:userActions.organizeTodos
+    organizeTodos:userActions.organizeTodos,
+    setPage:modalActions.setPage
 } 
 export default connect(mapPropsToState,actionCreators)(OrganizeMenu)

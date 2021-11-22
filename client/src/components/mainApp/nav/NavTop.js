@@ -12,6 +12,9 @@ import { connect } from 'react-redux';
             <li className="nav-link">
                 <button className="nav-top-button" onClick={()=>{
                    setShowAccount(!showAccount)
+                   props.setShowEdit(false)
+                   props.setShowCreate(false)
+                   
                 }}>{props.user.name}</button>
             </li>
             <li className="nav-link">
@@ -31,7 +34,7 @@ import { connect } from 'react-redux';
     }
     
     return (
-        <nav className="justify-content-end navbar navbar-light navbar-custom">
+        <nav className="justify-content-end navbar  fixed-top  navbar-light navbar-custom">
             {navBarContent()}
          
         </nav>

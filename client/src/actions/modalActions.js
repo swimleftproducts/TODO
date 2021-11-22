@@ -7,8 +7,17 @@ const toggleModal =() =>async (dispatch)=>{
     }catch(err){
         console.log(err)
     }
+}
 
+const setPage = (page) =>async (dispatch)=>{
+    try{
+        dispatch({type:modalConstants.setModalPage,payload:page})
+     
+    }catch(err){
+        console.log(err)
+    }
 }
 export const modalActions= {
-   toggleModal
+   toggleModal,
+   setPage
 }

@@ -2,25 +2,30 @@ const {User, Todo} = require('../models')
 const {genPassword, compare} = require('../authConfig/helpers')
 const helperMethods = require('./helperMethods')
 const passport = require('../authConfig')
+const ApiError = require('../errorhandling/ApiError')
+
 //pull in AWS s3 object
 const s3 = require('../s3config/index.js').s3
 const { 
     v4: uuidv4,
 } = require('uuid');
+const { Route53Resolver } = require('aws-sdk')
 
 module.exports={
 
     apitest(req,res){
         res.send('api working')
     },
+
     login(req,res,next){ 
         passport.authenticate(
             'local',
             function(err, user, info) {
                 
                 if (err) { return next(err); }
-                if (!user) { return res.json({authenticated:false}); }
-                
+               
+                if (!user) { next(ApiError.badCredentials("incorrect credentials","could not find one of username or password",2002))
+                return }
 
                 const populatedUser = user.populate('todos').then((user)=>{
                     req.logIn(user, function(err) {
@@ -32,7 +37,10 @@ module.exports={
                        return res.json({authenticated:true,user:{name,email,todos:todosFullUrl,_id}});   
                     });
                     }
-                )
+                ).catch((err) => {
+                    console.log('err in login',err)
+                    next(ApiError.internal('database error',"Error occured in login",2003))
+                })   
             })(req, res, next);
     },
     async logout (req,res,next){
@@ -41,7 +49,7 @@ module.exports={
     }
 
     ,   
-    async register(req,res){
+    async register(req,res,next){
         
         try{        
             let user=await User.findOne({email: req.body.email})
@@ -69,16 +77,15 @@ module.exports={
                 
                 await newUser.save()
                 await newToDo.save()
-                // const {name,email,todos,_id} = newUser
-
-                // res.json({authenticated:true,user:{name,email,todos,_id}})
-               res.redirect(307,'/api/login')
+             
+                res.redirect(307,'/api/login')
             }else{
-                res.send({created:false})
+                next(ApiError.existingCredentials("account exists for that email","account exists for that email",2004))
+                return
             }
         }catch(err){
-                console.log(err)
-                res.json({user:null,isSignedIn:false})
+            
+            next(ApiError.internal('database error',"Error occured in register",2003))
         }
     },
 
@@ -88,6 +95,9 @@ module.exports={
                 const {name,email,todos,_id} = user
                 const todosFullUrl = helperMethods.makeFullImageUrl(todos)
                 res.send({authenticated:true,user:{name,email,todos:todosFullUrl,_id}})
+            }).catch((err) => {
+                console.log('err in isauth',err)
+                next(ApiError.internal('database error',"Error occured in isAuth",2001))
             })            
         }else{
             res.send({authenticated:false})
@@ -103,7 +113,7 @@ module.exports={
                 type: req.body.type,
                 numberSteps: req.body.numberSteps,
                 completeSteps: 0,
-                imageUrl: `${req.body.imgKey}`,
+                imageUrl: `${req.body.imgKey ||  "blank"}`,
                 details: req.body.details,
                 created: new Date()
             })
@@ -113,20 +123,13 @@ module.exports={
                 user.save(),
                 newTodo.save()
             ])
-            // const populatedUser = await results[0].populate('todos')
-            // const {name,email,todos,_id} = populatedUser
-            
-            const todo= results[1]
-          
+                    
+            const todo= results[1]  
             //add full url
             const todoFullUrl = helperMethods.makeFullImageUrl(todo,false)
-         
-            
-            // res.send({user:{name,email,todos:todosFullUrl,_id}}) 
             res.send(todoFullUrl)
         }catch(err){
-            console.log(err)
-            res.send({created:false})
+            next(ApiError.internal('database error, todo not created',"Error occured in create",2003))
         }
     },
     async getpresignedurl(req,res,next){
@@ -154,7 +157,7 @@ module.exports={
         const direction = parseInt(req.params.direction)
         let todos
 
-      
+      try{
         switch (req.params.method) {
             case creation:
                 ({todos} = await User.findById(id).populate({path:'todos',options:{sort:{created:direction}}}).exec())
@@ -172,21 +175,18 @@ module.exports={
                 break;
         }
         //add full url
-         const todosFullUrl = helperMethods.makeFullImageUrl(todos)
-
+        const todosFullUrl = helperMethods.makeFullImageUrl(todos)
         res.send(todosFullUrl)
+        }catch(err){
+            next(ApiError.internal('database error, unable to organize',"Error occured in sortTodos",2003))
+        }
     }
     ,
     async delete(req,res,next){
         try{
             const id = req.params.id
             const userId= req.user._id
-            //this removes the ref to the deleted todo from the user document
-            await User.findByIdAndUpdate(userId,{
-                $pull:{
-                    'todos':id
-                }
-            })
+            
             //Delete image from the S3 bucket
             const todo = await Todo.findById(id)
             const imageParams = {
@@ -194,21 +194,35 @@ module.exports={
                Key: todo.imageUrl
             }
             
-            s3.deleteObject(imageParams,(err,data) => {
-                if(err){
-                    res.status(500).send(err)
+            try{
+               await s3.deleteObject(imageParams,(err,data)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        console.log(data)
+                    }
+                }).promise()       
+            }catch(err){
+                return next(ApiError.internal('s3 image hosting error',"Error occured in delete",3000))
+            }
+           
+                
+            //this removes the ref to the deleted todo from the user document
+            await User.findByIdAndUpdate(userId,{
+                $pull:{
+                    'todos':id
                 }
-            })
-
+            })  
             //this deletes the todo as sent by the client
             await Todo.findByIdAndRemove(id) 
             const user = await User.findById(userId).populate('todos')
             const {name,email,todos,_id}=user
             const todosFullUrl = helperMethods.makeFullImageUrl(todos)
+
             res.send({deleted:true,user:{name,email,todos:todosFullUrl,_id}})
         }catch(err){
-            console.log(err)
-            res.send({deleted:false})
+            
+            next(ApiError.internal('database error, todo not deleted',"Error occured in delete",2003))
         }
     },
     async edit(req,res,next){
@@ -216,23 +230,22 @@ module.exports={
 
             const {id,title,type,numberSteps,imgKey:imageUrl,details} = req.body
             const userId = req.user._id            
-            await Todo.findByIdAndUpdate(id,{
+            const newTodo=await Todo.findByIdAndUpdate(id,{
                 title,type,numberSteps,imageUrl,details
-            }) 
-            const user = await User.findById(userId).populate('todos')
-            const {name,email,todos,_id}=user
-            const todosFullUrl = helperMethods.makeFullImageUrl(todos)
-            res.send({user:{name,email,todos:todosFullUrl,_id}})
+            },{
+                new: true
+              }) 
+            const todoFullUrl = helperMethods.makeFullImageUrl(newTodo,0)
+            res.send(todoFullUrl)
         }catch(err){
-            console.log(err)
-            res.send({edited:false})
+            next(ApiError.internal('database error, update not made',"Error occured in progress",2003))
         } 
     },
 
     async progress(req,res,next){
         try{
             const {direction, id} = req.body
-            const userId = req.user._id
+           const userId = req.user._id
             // create update object
             const todo = await Todo.findById(id)
             if(todo.completeSteps===0 && direction===0){
@@ -259,8 +272,7 @@ module.exports={
             const todosFullUrl = helperMethods.makeFullImageUrl(todos)
             res.send({user:{name,email,todos:todosFullUrl,_id}})
         }catch(err){
-            console.log(err)
-            res.send({deleted:false})
+            next(ApiError.internal('database error, update not made',"Error occured in progress",2003))
         }
     },
 
@@ -305,12 +317,12 @@ module.exports={
 
             res.send({user:createResponse(populatedUser)})
         }catch(err){
-            console.log(err)
-            res.send({update:false})
+            next(ApiError.internal('user account changes not made',"Error occured in edit user",2003))
         }
 
     },
     async deleteUser (req,res,next){
+       
         let id = req.params.id  
         try{
             if(id!==req.user._id.toString()){
@@ -324,20 +336,22 @@ module.exports={
                     return {Key:element.imageUrl}
                 })
                
-                 const imageParams = {
+                const imageParams = {
                   Bucket:process.env.BUCKET_NAME,
                   Delete:{
                      Objects: keyList
-                     }
+                  }
                 }
-                s3.deleteObjects(imageParams,(err,data) => {
-                 if(err){
-                     console.log(err)
-                   
-                    }
-                })
+
+                try{
+                    await s3.deleteObjects(imageParams,(err,data)=>{
+                     }).promise()       
+                 }catch(err){
+                     return next(ApiError.internal('s3 image hosting error',"Error occured in delete",3000))
+                 }
+                 
                 //delete all todos
-                user.todos.forEach(async todo => {
+                await user.todos.forEach(async todo => {
                     await Todo.findByIdAndRemove(todo._id)
                 });
 
@@ -346,7 +360,7 @@ module.exports={
                 res.send({deleted:true})
             }
         }catch(err){
-            res.send({err})
+            next(ApiError.internal('user account not deleted',"Error occured in delete user",2003))
         }    
     }
 }

@@ -1,21 +1,32 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { connect } from 'react-redux';
 
 import ProgressBar from './ProgressBar.js'
 import TodoDetail from './TodoDetail.js'
 
 import {userActions} from '../../../actions/userActions'
+  
+import { modalConstants } from '../../../constants/modalConstants';
+import { modalActions } from '../../../actions/modalActions';
+
 
 function TodoCardDetail(props) {
     // eslint-disable-next-line no-unused-vars
   
     // eslint-disable-next-line no-unused-vars
     let {_id,title,type,numberSteps,completeSteps,imageUrl,details,completed}=props.config
+    const {setPage} = props
 
+    
+    useEffect(() => {
+        setPage(modalConstants.pages.detail)
+        return (() => {
+            setPage(modalConstants.pages.homepage)
+      })    
+    },[setPage])
     
    
     const editTodo =() => {
-        console.log('triggered edit')
         props.setShowEdit({id:_id})
     }
     return (
@@ -57,10 +68,12 @@ function TodoCardDetail(props) {
 }
 function mapPropsToState(state){
     return{
+        page:state.modal.page,
         todos:state.user.todos||[],
     }
 }
 const actionCreators={
-    changeProgress:userActions.changeProgress
+    changeProgress:userActions.changeProgress,
+    setPage:modalActions.setPage 
 } 
 export default connect(mapPropsToState,actionCreators)(TodoCardDetail)

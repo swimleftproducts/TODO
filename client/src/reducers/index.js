@@ -2,6 +2,8 @@ import { combineReducers } from "redux";
 import {authConstants} from "../constants/authConstants";
 import {userConstants} from "../constants/userConstants"
 import {modalConstants} from '../constants/modalConstants'
+import {errorConstants} from '../constants/errorConstants'
+import {reducerHelpers} from '../reducers/reducerHelpers'
 
 const authReducer =(state=false,action)=>{
    switch(action.type){
@@ -22,7 +24,12 @@ const userReducer = (state={},action)=>{
         case userConstants.clearUser:
             return {}
         case userConstants.editTodo:
-            return {}
+            const newEditTodos = state.todos.map((element) => {
+                if(element._id===action.payload._id){
+                    return action.payload
+                }else{return element}
+            })
+            return {...state,todos:newEditTodos}
         case userConstants.setTodos:
             return  {...state, todos:action.payload}
         case userConstants.addTodo:
@@ -56,21 +63,59 @@ const userReducer = (state={},action)=>{
     }
 }
 
-const modalReducer= (state=false,action)=>{
+const modalReducer= (state={show:false,page:"landing"},action)=>{
     switch(action.type){
         case modalConstants.toggleModal:
-            return !state
+            return {...state,show:!state.show}
+        case modalConstants.setModalPage:
+            return{...state, page:action.payload}
         default:
             return state
     }
 }
 
+const errorFormat ={
+    code:null,
+    message:"init",
+    errors:{
+        description:null,
+        internalErrorCode:null
+    }
+}
+
+const errorReducer= (state={isLoading:false,exists:false,errorDetails:errorFormat},action)=>{
+    
+    switch (action.type) {
+        case errorConstants.error:
+            return{
+                ...reducerHelpers.errors(state,action),
+                isLoading:false
+            }
+        case errorConstants.clearError:
+            return{
+                ...state,
+                exists:false
+            }
+        case errorConstants.isLoading:
+            return{
+                ...state,isLoading:true
+            }
+        case errorConstants.isDoneLoading:
+            return{
+                 ...state,isLoading:false
+            }
+
+        default:
+           return {...state}
+    }
+}
 
 
 const rootReducer = combineReducers({
     auth:authReducer,
     user:userReducer,
-    modal:modalReducer
+    modal:modalReducer,
+    error:errorReducer
 })
 
 export default rootReducer

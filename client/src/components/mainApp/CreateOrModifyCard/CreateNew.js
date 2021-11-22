@@ -1,12 +1,12 @@
 import React from 'react'
 import CreateNewForm from './CreateNewForm'
+import { connect } from 'react-redux'
 
-
-export default function CreateNew(props) {
+function CreateNew(props) {
     
     return (
         
-    <div className="sign-in-block">
+    <div className={`sign-in-block ${props.modal?"edit-account-block-modal":null}`}>
         <div className="mx-auto ">       
             <CreateNewForm setShowCreate={props.setShowCreate}/>
         </div>
@@ -14,6 +14,17 @@ export default function CreateNew(props) {
    
     )
 }
+const mapStateToProps = (state) => ({
+   
+    modal:state.modal.show
+})
+
+const mapDispatchToProps = {    
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateNew)
+
 
 
 

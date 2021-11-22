@@ -8,19 +8,24 @@ import LandingPage from './LandingPage'
 import Login from './authentication/Login'
 import Register from './authentication/Register';
 import Homepage from './mainApp/Homepage'
+import Error from './errorHandling/Error'
+import Loading from './Loading'
 import ProtectedRoute from './higherOrder/ProtectedRoute';
 import {authActions} from '../actions'
 import {modalActions} from '../actions/modalActions'
 
 import Modal from '../components/behindscenes/Modal'
+import { modalConstants } from '../constants/modalConstants';
 
 
 
 const App =  (props) => {
    
-
+   const {error}= props
     useEffect(() => {
+        props.setPage(modalConstants.pages.landing)
         props.isAuthenticated()
+        
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -29,9 +34,11 @@ const App =  (props) => {
         <div className={`under-the-hood ${props.modal?"under-the-hood-light":null}`} style={{"backgroundColor":"rgb(158, 177, 221)"}} onClick={() => {
           props.toggleModal()
         }}>
-         { props.modal?"click back to app": "behind the scenes"}
+         { props.modal.show?"click back to app": "behind the scenes"}
         </div>
-        {props.modal?<Modal/>:null}
+        {props.modal.show?<Modal/>:null}
+        {error.exists?<Error />:null}
+        {error.isLoading?<Loading/>:null}
         <Router history={history}>
               <div style={{"height":"100%","width": "100%"}}>     
                   <Route path="/" exact >
@@ -53,12 +60,14 @@ const App =  (props) => {
 
 const actionCreators ={
     isAuthenticated:authActions.isAuthenticated,
-    toggleModal:modalActions.toggleModal
+    toggleModal:modalActions.toggleModal,
+    setPage:modalActions.setPage
 }
 function mapPropsToState(state){
     return{
       auth:state.auth,
-      modal:state.modal
+      modal:state.modal,
+      error:state.error
     }
 }
 export default connect(mapPropsToState,actionCreators)(App)

@@ -2,134 +2,218 @@ import {userConstants} from "../constants/userConstants";
 import {authConstants} from '../constants/authConstants'
 import axios from "axios";
 import history from '../history'
+import { errorActions } from "./errorActions";
+import { errorConstants } from "../constants/errorConstants";
+import { s3Helpers } from "../helpers/s3Helpers";
 
 const setUser = (user)=>async(dispatch)=>{
-    console.log("inside setUser Action",user)
     dispatch({type:userConstants.setUser, payload:user})
 }
 
 const clearUser = ()=>async(dispatch)=>{
-    console.log("inside clearUser Action")
     dispatch({type:userConstants.clearUser, payload:{}})
 }
 
-const createTodo = (formData,userId,setShowCreate) => async(dispatch) => {
-    try{
-        const response = await axios.post('/api/create',formData,
-       { withCredentials: true })
-    if(response.data.error){
-        alert(response.data.error)
-        
+const createTodo = (formData,userId,setShowCreate,file) => async(dispatch) => {
+    dispatch(errorActions.isLoadingAction())
+    if(file){
+    const response = await s3Helpers.getPresignedUrl(file)
+    const {URL,imgKey,code} = response
+    //if no error key on response object
+    if(!code){
+      const outcome = await s3Helpers.uploadPhoto(URL,file)
+      formData.imgKey=imgKey
+      if(outcome==="error"){
+        dispatch(errorActions.isDoneLoadingAction())
+        dispatch(errorActions(errorConstants.error,{
+            code:500,
+            message:"error uploading image",
+            errors:{
+                description:"AWS upload error",
+                internalErrorCode:3000
+            }
+          }))
+      }
     }else{
-        // dispatch({type:userConstants.setUser,payload:User.data.user})
+        dispatch(errorActions.isDoneLoadingAction())
+        dispatch(errorActions.errorActionCreator(errorConstants.error,response))
+    }
+    }
+
+    await axios.post('/api/create',formData,
+    { withCredentials: true }).then((response) => {
         dispatch({type:userConstants.addTodo,payload:response.data})
         setShowCreate(false)
-    }
-    }
-    catch(err){
-        console.log(err)
-    }    
+        dispatch(errorActions.isDoneLoadingAction())
+    }).catch((err)=>{     
+        dispatch(errorActions.isDoneLoadingAction()) 
+        dispatch(errorActions.errorActionCreator(errorConstants.error,err.response.data))
+        if(err.response.data.errors.internalErrorCode===2000){
+               dispatch(userActions.clearUser())
+            dispatch({type:authConstants.logout,payload:false}) 
+            history.push('/')
+        }
+       })  
 }
 
+const editTodo = (formData,id,setShowEdit,file) => async(dispatch) => {
+    dispatch(errorActions.isLoadingAction())
 
-
-
-const editTodo = (formData,id) => async(dispatch) => {
+    //check if user wants to update file
+    let outcome="" 
+    if(file){
+        const response = await s3Helpers.getPresignedUrl(file)
+        const {URL,imgKey,code} = response
+        //if no error key on response object
+        if(!code){
+            outcome = await s3Helpers.uploadPhoto(URL,file)
+            
+            formData.imgKey=imgKey
+            if(outcome==="error"){
+                dispatch(errorActions.errorActionCreator(errorConstants.error,{
+                    code:500,
+                    message:"error uploading image",
+                    errors:{
+                        description:"AWS upload error",
+                        internalErrorCode:3000
+                    }
+                }))
+            }
+        }else{
+            dispatch(errorActions.errorActionCreator(errorConstants.error,response))
+        }
+    }
+    // if upload errors out with a error from AWS then abort updating the todo
+    if(outcome==="error"){return}
+    
     const body= {id,...formData}
-   if(body.imgKey===""){
-       delete body.imgKey
-   }
-    try{
-        console.log("in edit todo", body)
-        const User = await axios.put('/api/edit',body,
-       { withCredentials: true })
-        console.log("in edit user", User)
-    if(User.data.error){
-        history.push('/')
-    }else{
-        dispatch({type:userConstants.setUser,payload:User.data.user})
+     
+    await axios.put('/api/edit',body,
+    { withCredentials: true })
+    .then((todo) => {
+        dispatch({type:userConstants.editTodo,payload:todo.data})
+        setShowEdit(0)
+        dispatch(errorActions.isDoneLoadingAction())
+    })
+    .catch((err) => {
+        dispatch(errorActions.isDoneLoadingAction())
+        dispatch(errorActions.errorActionCreator(errorConstants.error,err.response.data))
+        if(err.response.data.errors.internalErrorCode===2000){
+            dispatch(userActions.clearUser())
+            dispatch({type:authConstants.logout,payload:false}) 
             history.push('/')
-    }
-    }
-    catch(err){
-        console.log(err)
-    }    
+        }
+    })
 }
 
 const editUser =(formData,userId) => async(dispatch)=>{
-try{
+    dispatch(errorActions.isLoadingAction())
     const {name,email,password}= formData
     if(name.length===0 && email.length===0 && password.length===0){
-        console.log('no update')
         history.push('/')
     }
-    const User = await axios.put('/api/user/edit',{id:userId,name,email,password},
+    await axios.put('/api/user/edit',{id:userId,name,email,password},
     { withCredentials: true })
-    console.log("returned User ",User)
-    if(User.data.error){
-
-    }else{
-        dispatch({type:userConstants.setUser,payload:User.data.user})
+    .then((user)=>{
+        dispatch({type:userConstants.setUser,payload:user.data.user})
+        dispatch(errorActions.isDoneLoadingAction())
         history.push('/')
-    }
-
-}catch(err){
-    console.log(err)
-}}
+    })
+    .catch((err)=>{
+        dispatch(errorActions.isDoneLoadingAction())      
+        dispatch(errorActions.errorActionCreator(errorConstants.error,err.response.data))
+        if(err.response.data.errors.internalErrorCode===2000){
+            dispatch(userActions.clearUser())
+            dispatch({type:authConstants.logout,payload:false}) 
+            history.push('/')
+        }
+       })  
+}
 
 const changeProgress =(direction,id) =>async (dispatch)=> {
-    try{
-        // const User = await axios.put('/api/progress',{id, direction},{ withCredentials: true })
-        axios.put('/api/progress',{id, direction},{ withCredentials: true })
-        
         dispatch({type:userConstants.changeProgress,payload:{direction,id}})
-        // dispatch({type:userConstants.setUser,payload:User.data.user})
+        axios.put('/api/progress',{id, direction},{ withCredentials: true })
+        .then (() => {
+            history.push('/homepage')
+        })
+        .catch((err) => {
+            dispatch(errorActions.isDoneLoadingAction())
+            direction===1?direction=0:direction=1
+            dispatch({type:userConstants.changeProgress,payload:{direction,id}})
+            dispatch(errorActions.errorActionCreator(errorConstants.error,err.response.data))
+            if(err.response.data.errors.internalErrorCode===2000){
+                dispatch(userActions.clearUser())
+                dispatch({type:authConstants.logout,payload:false}) 
+                history.push('/')
+            }
+        })
         
-        history.push('/homepage')
-    }catch(err){
-        console.log(err)
-    }
+        
+       
+
 }
 
 const deleteUser = (id) => async(dispatch)=>{
-    try{
-        const Confirm = await axios.delete('/api/user/delete/'+id,{ withCredentials: true })
-        if(Confirm.data.deleted){
+        dispatch(errorActions.isLoadingAction())
+        axios.delete('/api/user/delete/'+id,{ withCredentials: true })
+        .then((confirm) => {
+            
+            dispatch(errorActions.isDoneLoadingAction())
             dispatch({type:userConstants.clearUser,payload:{}})
             dispatch({type:authConstants.logout,payload:false}) 
             history.push('/')
-        }else{
-            alert('user not deleted')
-        }
-    }catch(err){
-        console.log(err)
-    }    
+        })
+        .catch((err) => {
+            dispatch(errorActions.isDoneLoadingAction())
+            dispatch(errorActions.errorActionCreator(errorConstants.error,err.response.data))
+            if(err.response.data.errors.internalErrorCode===2000){
+                dispatch(userActions.clearUser())
+                dispatch({type:authConstants.logout,payload:false}) 
+                history.push('/')
+            }
+        })
+        
+  
 }
 
-const deleteTodo =(id) =>async (dispatch)=>{
-    try{
-        const Confirm = await axios.delete('/api/delete/'+id,{ withCredentials: true })
-        if(Confirm.data.deleted){
-            dispatch({type:userConstants.setUser,payload:Confirm.data.user})
-         
+const deleteTodo =(id,setShowEdit) =>async (dispatch)=>{
+    dispatch(errorActions.isLoadingAction())
+    axios.delete('/api/delete/'+id,{ withCredentials: true })
+    .then((confirm) => {
+       dispatch(errorActions.isDoneLoadingAction())
+       setShowEdit(0)
+       dispatch({type:userConstants.setUser,payload:confirm.data.user})    
+        
+    })
+    .catch((err) => {
+        dispatch(errorActions.isDoneLoadingAction())
+        dispatch(errorActions.errorActionCreator(errorConstants.error,err.response.data))
+        setShowEdit(0)
+        if(err.response.data.errors.internalErrorCode===2000){
+            dispatch(userActions.clearUser())
+            dispatch({type:authConstants.logout,payload:false}) 
             history.push('/')
-        }else{
-            alert('todo not deleted')
         }
-    }catch(err){
-        console.log(err)
-    }
-
+    })          
 }
 
 const organizeTodos = (method,direction) =>async (dispatch)=>{
-    try{
-        const {data} = await axios.get(`/api/todos/${method}/${direction||1}`,{ withCredentials: true })
-        
-        dispatch({type:userConstants.setTodos,payload:data})
-    }catch(err){
-        console.log(err)
-    }
+        dispatch(errorActions.isLoadingAction())
+        await axios.get(`/api/todos/${method}/${direction||1}`,{ withCredentials: true })
+        .then(({data}) => {
+            dispatch(errorActions.isDoneLoadingAction())
+            dispatch({type:userConstants.setTodos,payload:data})
+        })
+        .catch((err) => {
+            dispatch(errorActions.isDoneLoadingAction())
+            dispatch(errorActions.errorActionCreator(errorConstants.error,err.response.data))
+            if(err.response.data.errors.internalErrorCode===2000){
+                dispatch(userActions.clearUser())
+                dispatch({type:authConstants.logout,payload:false}) 
+                history.push('/')
+            }
+        })         
+  
 }
 
 export const userActions= {

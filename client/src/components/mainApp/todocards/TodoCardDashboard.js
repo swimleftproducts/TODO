@@ -24,8 +24,8 @@ import TodoCardModifiedDetail from './TodoCardDetail';
  
  
     return (
-        <div className="col-12">
-            <div className="test-wrapper">
+        <div className="col-12 mt-2">
+            <div className={`test-wrapper ${props.modal?"test-wrapper-modalActive":null}`}>
                 {renderTodos()}
             </div>
         </div>
@@ -34,7 +34,8 @@ import TodoCardModifiedDetail from './TodoCardDetail';
 }
 function mapPropsToState(state){
     return{
-        todos:state.user.todos||[]
+        todos:state.user.todos||[],
+        modal:state.modal.show
     }
 }
 const actionCreators={

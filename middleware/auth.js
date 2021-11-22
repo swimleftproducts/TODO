@@ -21,6 +21,7 @@ module.exports=(app) => {
         saveUninitialized: false,
         store: Store,
         cookie:{maxAge: (1000*60*10)}
+        //should add time to cookie
     }))
 
     //calls to get passport set up

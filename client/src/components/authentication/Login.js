@@ -1,10 +1,11 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import Nav from '../mainApp/nav/NavTop'
 
 import { connect } from 'react-redux';
 import {authActions} from '../../actions'
 import { Link } from 'react-router-dom'
-
+import { modalConstants } from '../../constants/modalConstants';
+import { modalActions } from '../../actions/modalActions';
 // import reactElementToJSXString from 'react-element-to-jsx-string';
 
 
@@ -12,22 +13,19 @@ import { Link } from 'react-router-dom'
     const [password,setPassword]=useState('')
     const [email,setEmail]=useState('')
    
+    const {setPage}=props
 
+    useEffect((params) => {
+        setPage(modalConstants.pages.signin)
+        return (() => {
+           setPage(modalConstants.pages.landing)
+      })    
+    },[setPage])
 
     const onSubmit = async (event) => {
       props.login({email:email,password:password})    
     }
-    
-//    const all = (<div className="mb-3">
-                      
-//    <input onChange={(e) => {
-//    setPassword(e.target.value)    
-//    }} type="password" name="password" className="form-control" id="password" value={password}/>
 
-//    <label htmlFor="password" className="sign-in-text">password</label>
-// </div>)
-   
-//     console.log("showing some jsx", reactElementToJSXString(all,{showFunctions:true}))
 
     return (
         <div className="general-background" style={{"height":"100%"}}>
@@ -79,7 +77,8 @@ function mapPropsToState(state){
     return{auth:state.auth}
 }
 const actionCreators={
-    login:authActions.login
+    login:authActions.login,
+    setPage:modalActions.setPage 
 } 
 
 export default connect(mapPropsToState,actionCreators)(Login)
