@@ -67,9 +67,9 @@ function ModalText(props) {
                     <h4>
                         Hello.
                     </h4>
-                    <h4>
+                    <h5>
                         Thank you for viewing this webapp.
-                    </h4>
+                    </h5>
                     <hr></hr>
                     <p  style={{ "fontSize": ".8rem"}}>
                         Throughout the site, the <span style={{"fontStyle": "italic"}}>behind the scenes</span> menu provides insight into the how and why. 
@@ -78,9 +78,9 @@ function ModalText(props) {
                        A website feature/page is listed at the top of the general tab. The info in the menu refers to this feature/page.
                     </p>
                     <p  style={{ "fontSize": ".8rem"}}>
-                        Enjoy,<br></br> Eric
+                        Enjoy,  Eric
                     </p>
-                    <p  style={{"backgroundColor":"white","transform":"translate(0px,-8px)","fontSize":".6rem", "textAlign":"center","fontStyle": "italic"}}>
+                    <p  style={{"backgroundColor":"white","transform":"translate(0px,-10px)","fontSize":".8rem", "textAlign":"center","fontStyle": "italic","height":"45px","lineHeight":"45px"}}>
                         <span  >click for overview</span>
                     </p>
                 </div>
