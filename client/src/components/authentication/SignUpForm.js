@@ -17,6 +17,7 @@ const SignupForm = (props) => {
 
   useEffect((params) => {
     setPage(modalConstants.pages.register)
+    console.log('called in form')
     return (() => {
       setPage(modalConstants.pages.landing)
   })    

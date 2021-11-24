@@ -2,6 +2,8 @@ import React, { Fragment }  from 'react'
 import { Link } from 'react-router-dom'
 import {authActions} from '../../../actions/authActions'
 import { connect } from 'react-redux';
+import { modalActions } from '../../../actions/modalActions';
+
 
  function Nav(props) {
     const {setShowAccount,showAccount}=props
@@ -48,7 +50,8 @@ function mapPropsToState(state){
     }
 }
 const actionCreators={
-    logout:authActions.logout
+    logout:authActions.logout,
+    setPage:modalActions.setPage
 } 
 
 export default connect(mapPropsToState,actionCreators)(Nav)

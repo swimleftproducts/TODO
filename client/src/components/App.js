@@ -22,8 +22,16 @@ import { modalConstants } from '../constants/modalConstants';
 const App =  (props) => {
    
    const {error}= props
+
     useEffect(() => {
+      
+       if(window.location.href.indexOf("register")>0){
+        props.setPage(modalConstants.pages.register)
+       }else if(window.location.href.indexOf("login")>0){
+        props.setPage(modalConstants.pages.signin)
+      }else{
         props.setPage(modalConstants.pages.landing)
+       }
         props.isAuthenticated()
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,7 +53,7 @@ const App =  (props) => {
                     {props.auth?   <Redirect to={{pathname:'/homepage'}}/>:<LandingPage/>}
                   </Route>
                   <Route path="/login" exact component={Login}/>
-                  <ProtectedRoute
+                 <ProtectedRoute
                     exact
                     path="/homepage"
                     component={Homepage}

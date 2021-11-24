@@ -15,7 +15,6 @@ function CreateNew(props) {
     )
 }
 const mapStateToProps = (state) => ({
-   
     modal:state.modal.show
 })
 

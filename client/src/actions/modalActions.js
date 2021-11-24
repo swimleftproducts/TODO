@@ -10,6 +10,7 @@ const toggleModal =() =>async (dispatch)=>{
 }
 
 const setPage = (page) =>async (dispatch)=>{
+  
     try{
         dispatch({type:modalConstants.setModalPage,payload:page})
      

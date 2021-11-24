@@ -1,8 +1,8 @@
 import React ,{useState} from 'react'
 import { connect } from 'react-redux';
 
-import TodoCardModified from './TodoCard';
-import TodoCardModifiedDetail from './TodoCardDetail';
+import TodoCard from './TodoCard';
+import TodoCardDetail from './TodoCardDetail';
 
  function TodoCardDashboard(props) {
 
@@ -14,9 +14,9 @@ import TodoCardModifiedDetail from './TodoCardDetail';
         return(
             props.todos.map((todo) => {
                 if(todo._id===detailId){
-                    return( <TodoCardModifiedDetail setShowEdit={props.setShowEdit}  key={todo._id} config={todo} detailId={detailId} setDetailId={setDetailId}/>)
+                    return( <TodoCardDetail setShowEdit={props.setShowEdit}  key={todo._id} config={todo} detailId={detailId} setDetailId={setDetailId}/>)
                 }else{
-                 return <TodoCardModified config={todo}  detailId={detailId} setShowEdit={props.setShowEdit} key={todo._id}  setDetailId={setDetailId}/>
+                 return <TodoCard config={todo}  detailId={detailId} setShowEdit={props.setShowEdit} key={todo._id}  setDetailId={setDetailId}/>
                 }
             })
         )

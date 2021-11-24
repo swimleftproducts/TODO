@@ -25,7 +25,7 @@ function Modal(props) {
             break;
             case backEnd:
                 setActiveMenu(backEnd)
-                setActiveMenuClass('modal-front-end')
+                setActiveMenuClass('modal-back-end')
             break;
         
             default:

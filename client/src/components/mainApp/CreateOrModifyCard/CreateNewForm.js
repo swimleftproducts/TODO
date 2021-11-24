@@ -1,7 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios'
 
 import { connect } from 'react-redux';
 import {userActions} from '../../../actions/userActions'
@@ -12,10 +11,6 @@ import { modalConstants } from '../../../constants/modalConstants';
 import { modalActions } from '../../../actions/modalActions';
 
 import { errorActions } from "../../../actions/errorActions";
-import { errorConstants } from "../../../constants/errorConstants";
-
-
-import { s3Helpers } from '../../../helpers/s3Helpers';
 
 const CreateNewForm= (props) => {
  const [file,setFile]= useState()

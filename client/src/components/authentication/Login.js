@@ -30,7 +30,7 @@ import { modalActions } from '../../actions/modalActions';
     return (
         <div className="general-background" style={{"height":"100%"}}>
             <Nav/>
-            <div className="sign-in-block">
+            <div className={`sign-in-block ${props.modal?"edit-account-block-modal":null}`}>
             <div className="mx-auto ">       
                 <form action="" method="" className="p-4">
                      <div className="mb-3">
@@ -74,11 +74,14 @@ import { modalActions } from '../../actions/modalActions';
 }
 
 function mapPropsToState(state){
-    return{auth:state.auth}
+    return{auth:state.auth,
+    modal:state.modal.show
+    }
 }
 const actionCreators={
     login:authActions.login,
-    setPage:modalActions.setPage 
+    setPage:modalActions.setPage,
+     
 } 
 
 export default connect(mapPropsToState,actionCreators)(Login)

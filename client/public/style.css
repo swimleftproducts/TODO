@@ -181,7 +181,6 @@ z-index: 9!important;
 }
 
 .modal-contents{
- 
   position:relative;
   left:0px;
   top:1%;
@@ -228,7 +227,8 @@ z-index: 9!important;
 .modal-text{
   background-color: rgb(255, 255, 255);
   width:100%;
-  height:100%;
+  height:370px;
+  overflow-y: scroll;
 }
 .modal-menu-text{
   text-align: center;
@@ -246,9 +246,7 @@ z-index: 9!important;
   right: 0;
   bottom: 60px !important;
   left: 0;
-  z-index: 1030;
-  
-  
+  z-index: 1030;  
 }
 
 
@@ -393,7 +391,6 @@ z-index: 9!important;
   padding: 2px;
   width: 100%;
   max-width: 500px;
- 
   height: 30px;
   background-color: rgb(196,196,196) ;
 }
@@ -440,7 +437,7 @@ z-index: 9!important;
 
 .test-wrapper {
   text-align: center;
-  display: flex;
+  display: grid;
   grid-template-columns: repeat(auto-fill,250px);
   gap:0px;
   grid-auto-rows: 200px;
@@ -508,18 +505,13 @@ z-index: 9!important;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width:600px !important;
+  width:500px !important;
   background-color: rgb(160, 235, 160);
   max-height: 750px !important;
 }
 .edit-account-block-modal{
-  
-  left: 60% !important;
-  
+  left: 65% !important;  
 }
-
-
-
 
 .image-upload{
   font-size: 1rem;
@@ -528,4 +520,14 @@ z-index: 9!important;
 
 .main-padding-top{
   padding-top: 60px !important;
+}
+
+.intro-modal{
+  position: absolute;
+  width:84%;
+  height: 80%;
+  top: 15%;
+  left: 8%;
+  border: solid 2px black;
+  background-color:  rgb(196,196,196,.95);
 }

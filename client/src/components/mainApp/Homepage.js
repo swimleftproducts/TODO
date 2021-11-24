@@ -22,7 +22,7 @@ function Homepage(props) {
     useEffect(() => {
         setPage(modalConstants.pages.homepage)
         return (() => {
-            setPage(modalConstants.pages.homepage)
+            setPage(modalConstants.pages.landing)
       })    
     },[setPage])
 
@@ -54,7 +54,7 @@ function Homepage(props) {
         }}>
             <NavTop setShowAccount={setShowAccount} showAccount={showAccount} setShowEdit={setShowEdit} setShowCreate={setShowCreate}/>
            
-            <div className="container-fluid  row mx-0 my-3 p-0  ">
+            <div className="container-fluid mx-0 my-3 p-0  ">
                 <div className="row justify-content-center my-0 mx-0 p-0 ">
                  {renderContents()} 
                 </div>
