@@ -227,7 +227,7 @@ align-items: center;
 .under-the-hood-light{
   z-index: 100;
   width:320px;
-  
+ 
   
 }
 .todo-modal{
@@ -239,7 +239,6 @@ align-items: center;
   width:100%;
   height: 100%; 
   border-radius: 0px;
-  
 }
 .modal-container{
   border-radius: 0px !important;
