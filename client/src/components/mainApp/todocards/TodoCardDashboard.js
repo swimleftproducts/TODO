@@ -24,8 +24,8 @@ import TodoCardDetail from './TodoCardDetail';
  
  
     return (
-        <div className="col-12 mt-2">
-            <div className={`test-wrapper ${props.modal?"test-wrapper-modalActive":null}`}>
+        <div className="col-12 mt-4">
+            <div className={`tododashboard ${props.modal?"test-wrapper-modalActive":""}`}>
                 {renderTodos()}
             </div>
         </div>

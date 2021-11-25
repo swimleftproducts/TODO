@@ -12,7 +12,7 @@ import { modalActions } from '../../../actions/modalActions';
          return(
              <Fragment>
             <li className="nav-link">
-                <button className="nav-top-button" onClick={()=>{
+                <button className="nav-top-button " onClick={()=>{
                    setShowAccount(!showAccount)
                    props.setShowEdit(false)
                    props.setShowCreate(false)
@@ -26,7 +26,11 @@ import { modalActions } from '../../../actions/modalActions';
          )        
         }else{
             return(
-                <Link className="navbar-brand navbar-text" to="/">TODO</Link>
+                <li className="nav-link">
+                    <Link className="nav-top-button" to="/">TODO</Link>
+
+                </li>
+                
             )
         }
     }

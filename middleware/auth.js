@@ -20,7 +20,7 @@ module.exports=(app) => {
         resave: false,
         saveUninitialized: false,
         store: Store,
-        cookie:{maxAge: (1000*60*10)}
+        cookie:{maxAge: (1000*60*10*60)}
         //should add time to cookie
     }))
 

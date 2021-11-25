@@ -18,12 +18,12 @@ export default function NavBottom(props) {
                     <li className="nav-link">
                         <button className="nav-bottom-button" 
                         onClick={()=>{props.setShowCreate(!props.showCreate)}}
-                        >create</button>
+                        >create  <i class="mx-1 bi bi-pencil"></i></button>
                     </li>
                     <li className="nav-link">
                         <button className="nav-bottom-button" 
                         onClick={toggleOrganizeBar}
-                        >organize</button>
+                        >organize   <i class="mx-1 bi bi-filter-square"></i></button>
                         </li>
              </nav>
        </div>        

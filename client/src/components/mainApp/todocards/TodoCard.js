@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { connect } from 'react-redux';
 
 import ProgressBar from './ProgressBar.js'
@@ -15,16 +15,16 @@ function TodoCard(props) {
         props.setShowEdit({id:_id})
     }
     return (
-       <div className={` nb-todo-card  `} onClick={(e)=>{
+       <div className={`todo-card   `} onClick={(e)=>{
           props.setDetailId(_id)           
        }}>
            <i 
             onClick={editTodo}
-            className="todo-icon-edit bi bi-gear">
+            className="todo-icon-edit bi bi-pencil">
             </i>
            
-           <div className="card p-2" >
-            <img className={`${completed?"todo-card-completed":""} card-img-top rounded-0`} src={`${imageUrl}`} alt=".."/>
+           <div className="card" >
+            <img className={`${completed?"todo-card-completed":""} card-img-top `} src={`${imageUrl}`} alt=".."/>
             
             <div className="todo-card-info container-fluid  m-0 p-0 ">
                 <ProgressBar numberSteps={numberSteps} completeSteps={completeSteps}/>

@@ -20,11 +20,13 @@ function TodoCardDetail(props) {
     
     useEffect(() => {
         setPage(modalConstants.pages.detail)
+        console.log("completestesps",completeSteps)
         return (() => {
             setPage(modalConstants.pages.homepage)
       })    
     },[setPage])
     
+
    
     const editTodo =() => {
         props.setShowEdit({id:_id})
@@ -33,13 +35,13 @@ function TodoCardDetail(props) {
        <div className="  nb-todo-card-detail  " onClick={(e)=>{
           props.setDetailId(0)           
        }}>
-           <i 
+            <i 
             onClick={editTodo}
-            className="todo-icon-edit bi bi-gear">
+            className="todo-icon-edit bi bi-pencil">
             </i>
            
-           <div className="card p-2" >
-            <img className={`${completed?"todo-card-completed":""} card-img-top rounded-0`} src={`${imageUrl}`} alt=".."/>
+           <div className="card " >
+            <img className={`${completed?"todo-card-completed":""} card-img-top-detail `} src={`${imageUrl}`} alt=".."/>
             
             <div className="todo-card-info container-fluid  m-0 p-0 ">
                 <ProgressBar numberSteps={numberSteps} completeSteps={completeSteps}/>

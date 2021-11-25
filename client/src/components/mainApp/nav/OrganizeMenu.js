@@ -31,7 +31,7 @@ function OrganizeMenu(props) {
 
     
     return (
-        <nav className="navbar  navbar-light organizebar-custom justify-content-center mx-5">
+        <nav className=" organizebar-custom ">
             <li className="nav-link">
                 <button id="creation" onClick={clickHandler} className={`${active.target==="creation"?"nav-bottom-button-active":null} nav-bottom-button`} >creation</button>
             </li>

@@ -42,7 +42,9 @@ const App =  (props) => {
         <div className={`under-the-hood ${props.modal?"under-the-hood-light":null}`} style={{"backgroundColor":"rgb(158, 177, 221)"}} onClick={() => {
           props.toggleModal()
         }}>
-         { props.modal.show?"click back to app": "behind the scenes"}
+         { props.modal.show?"click back to app   ": "behind the scenes    "}
+ 
+         <i class="bi bi-lightbulb-fill modal-icon modal-icon-new blink_me"></i>
         </div>
         {props.modal.show?<Modal/>:null}
         {error.exists?<Error />:null}
