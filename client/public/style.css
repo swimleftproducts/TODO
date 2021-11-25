@@ -175,7 +175,7 @@ align-items: center;
 .under-the-hood{
   display: flex;
   padding:0px 4px;
-  justify-content: end;
+  justify-content: start;
   align-items: center;
   background-color: var(--primary-color);
   position:fixed;
@@ -215,9 +215,19 @@ align-items: center;
     opacity: 0;
   }
 }
+.hints-remaining{
+ /* position:absolute;
+ top:0px;
+ left:165px; */
+ font-weight: bold;
+ font-size: 1rem;
+ width:200px;
+}
 
 .under-the-hood-light{
   z-index: 100;
+  width:320px;
+  
   
 }
 .todo-modal{
@@ -500,7 +510,7 @@ align-items: center;
   right:0px !important;
   font-size: 1.25rem;
   z-index: 5;
-  border-radius: 0px 0px 0px 10px ;
+  border-radius:0px 0px 0px 15px;
 }
 
 .todo-text-title{
@@ -554,7 +564,7 @@ align-items: center;
   right:0px !important;
   font-size: 1.25rem;
   z-index: 8;
-  border-radius: 0px 0px 0px 10px ;
+  border-radius: 0px ;
 }
 
 .nb-todo-card-detail{

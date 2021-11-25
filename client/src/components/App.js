@@ -36,15 +36,30 @@ const App =  (props) => {
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
+    function alertNewEmployer(){
+      const {showAlert}=props.modal
+      if(showAlert){
+        return("modal-icon-new blink_me")
+      }else{
+        return ("modal-icon-old")
+      } 
+    }
+     function remaining(){
+       const {visited}=props.modal
+       return (`${visited.length}/9 areas explored`)
+     }
 
     return(
         <div style={{"height":"100%","width": "100%"}}>
-        <div className={`under-the-hood ${props.modal?"under-the-hood-light":null}`} style={{"backgroundColor":"rgb(158, 177, 221)"}} onClick={() => {
+        <div className={`under-the-hood ${props.modal.show?"under-the-hood-light":null}`} style={{"backgroundColor":"rgb(158, 177, 221)"}} onClick={() => {
           props.toggleModal()
         }}>
-         { props.modal.show?"click back to app   ": "behind the scenes    "}
+         { props.modal.show?`back to app`: "behind the scenes    "}
  
-         <i class="bi bi-lightbulb-fill modal-icon modal-icon-new blink_me"></i>
+         <i className={`bi bi-lightbulb-fill modal-icon ${alertNewEmployer()}`}></i>
+        {props.modal.show?<div className="hints-remaining">
+         {remaining()} 
+         </div>:""}
         </div>
         {props.modal.show?<Modal/>:null}
         {error.exists?<Error />:null}
