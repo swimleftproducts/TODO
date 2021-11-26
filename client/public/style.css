@@ -16,7 +16,7 @@
 
   --error-modal-color: rgb(250, 100, 100);
 
-  --todo-modal-mask:rgba(0, 0, 0,.4)
+  --todo-modal-mask:rgba(0, 0, 0,.2)
 }
 
 html, body {
