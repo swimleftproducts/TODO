@@ -32,8 +32,6 @@ const App =  (props) => {
         props.setPage(modalConstants.pages.register)
        }else if(window.location.href.indexOf("login")>0){
         props.setPage(modalConstants.pages.signin)
-      }else if(window.location.href.indexOf("homepage")>0){
-        props.setPage(modalConstants.pages.homepage)
       }else{
         props.setPage(modalConstants.pages.landing)
        }
