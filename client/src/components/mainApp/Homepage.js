@@ -44,7 +44,7 @@ function Homepage(props) {
     }
     
     return (
-        <div id="mainArea" className="homepage-background mx-0 my-0 main-padding-top "
+        <div id="mainArea" className=" homepage-background mx-0 my-0 main-padding-top "
         onClick={(e) => {
           if(e.target.id==="mainArea"){
               setShowEdit(false)

@@ -18,12 +18,13 @@ function TodoCard(props) {
        <div className={`todo-card   `} onClick={(e)=>{
           props.setDetailId(_id)           
        }}>
+           
+           
+           <div className="card" >
            <i 
             onClick={editTodo}
             className="todo-icon-edit bi bi-pencil">
             </i>
-           
-           <div className="card" >
             <img className={`${completed?"todo-card-completed":""} card-img-top `} src={`${imageUrl}`} alt=".."/>
             
             <div className="todo-card-info container-fluid  m-0 p-0 ">

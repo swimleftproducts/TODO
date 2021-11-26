@@ -1,8 +1,8 @@
 import {modalConstants} from '../constants/modalConstants'
 
-const toggleModal =() =>async (dispatch)=>{
+const toggleModal =(page) =>async (dispatch)=>{
     try{
-        dispatch({type:modalConstants.toggleModal,payload:null})
+        dispatch({type:modalConstants.toggleModal,payload:page})
      
     }catch(err){
         console.log(err)

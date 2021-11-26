@@ -66,16 +66,25 @@ const userReducer = (state={},action)=>{
 const modalReducer= (state={show:false,page:"",previous:"",visited:[],showAlert:true},action)=>{
     switch(action.type){
         case modalConstants.toggleModal:
-            return {...state,show:!state.show,showAlert:false}
-        case modalConstants.setModalPage:
-            const allVisited=state.visited
-            let updateShowAlert =false
-            if(!allVisited.includes(action.payload)){
-            allVisited.push(action.payload)
-                updateShowAlert=true
-                
+            console.log(action.payload)
+            
+            let allPagesViewed =state.visited
+            if(!state.show){
+                if(!allPagesViewed.includes(action.payload)){
+                    allPagesViewed.push(action.payload)  
+                }
             }
-            return{...state, page:action.payload,previous:state.page,visited:allVisited,showAlert:updateShowAlert}
+            return {...state,show:!state.show,showAlert:false,}
+        case modalConstants.setModalPage:
+            //test to see if alert should be shown
+            let viewedBehindScenes =state.visited
+            let showAlert=false
+            if(!viewedBehindScenes.includes(action.payload)){
+                 showAlert=true 
+              }
+            
+            //
+            return{...state, page:action.payload,previous:state.page,showAlert:showAlert}
         default:
             return state
     }

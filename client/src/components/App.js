@@ -1,4 +1,4 @@
-import React, {useEffect}  from 'react';
+import React, {useEffect,useState}  from 'react';
 import {Router, Route,Redirect} from 'react-router-dom'
 
 import {connect} from 'react-redux'
@@ -20,8 +20,11 @@ import { modalConstants } from '../constants/modalConstants';
 
 
 const App =  (props) => {
-   
+   const[remainingInfo,setRemainingInfo]=useState('') 
+
    const {error}= props
+   const {show}=props.modal
+
 
     useEffect(() => {
       
@@ -29,13 +32,32 @@ const App =  (props) => {
         props.setPage(modalConstants.pages.register)
        }else if(window.location.href.indexOf("login")>0){
         props.setPage(modalConstants.pages.signin)
+      }else if(window.location.href.indexOf("homepage")>0){
+        props.setPage(modalConstants.pages.homepage)
       }else{
         props.setPage(modalConstants.pages.landing)
        }
         props.isAuthenticated()
         
+      // for transitioning in text after behind scenes slider expands 
+      if(show){
+        setTimeout(() => {
+          const {visited}=props.modal
+          let remaining = `${visited.length}/9 areas explored`   
+          setRemainingInfo(
+            <div className="hints-remaining">
+              {remaining}
+           </div>
+         )
+        },500)
+      }else{
+        setRemainingInfo("")
+      }
+
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    },[show])
+
     function alertNewEmployer(){
       const {showAlert}=props.modal
       if(showAlert){
@@ -44,22 +66,19 @@ const App =  (props) => {
         return ("modal-icon-old")
       } 
     }
-     function remaining(){
-       const {visited}=props.modal
-       return (`${visited.length}/9 areas explored`)
-     }
-
+     
     return(
         <div style={{"height":"100%","width": "100%"}}>
-        <div className={`under-the-hood ${props.modal.show?"under-the-hood-light":null}`} style={{"backgroundColor":"rgb(158, 177, 221)"}} onClick={() => {
-          props.toggleModal()
+        <div className={`under-the-hood ${props.modal.show?"under-the-hood-light":null}`}  onClick={() => {
+          props.toggleModal(props.modal.page)
         }}>
-         { props.modal.show?`back to app`: "behind the scenes    "}
+          <div>
+            { props.modal.show?`click back to app`: "behind the scenes    "}
+          </div>
+         
  
          <i className={`bi bi-lightbulb-fill modal-icon ${alertNewEmployer()}`}></i>
-        {props.modal.show?<div className="hints-remaining">
-         {remaining()} 
-         </div>:""}
+         {remainingInfo}
         </div>
         {props.modal.show?<Modal/>:null}
         {error.exists?<Error />:null}
