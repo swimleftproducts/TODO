@@ -32,7 +32,7 @@ const App =  (props) => {
         props.setPage(modalConstants.pages.register)
        }else if(window.location.href.indexOf("login")>0){
         props.setPage(modalConstants.pages.signin)
-      }else{
+      }else if(window.location.href.indexOf("landing")>0){
         props.setPage(modalConstants.pages.landing)
        }
         props.isAuthenticated()

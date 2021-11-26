@@ -79,9 +79,10 @@ const modalReducer= (state={show:false,page:"",previous:"",visited:[],showAlert:
             //test to see if alert should be shown
             let viewedBehindScenes =state.visited
             let showAlert=false
+            console.log("setpageAction",action.payload)
             if(!viewedBehindScenes.includes(action.payload)){
                  showAlert=true 
-              }
+            }
             
             //
             return{...state, page:action.payload,previous:state.page,showAlert:showAlert}
