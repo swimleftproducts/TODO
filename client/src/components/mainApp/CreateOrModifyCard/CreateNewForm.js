@@ -40,10 +40,10 @@ const CreateNewForm= (props) => {
             .required('required'),
         numberSteps: Yup.number()
               .max(5,'5 or less')
-              .min(1,"at least 1 step"),
-
+              .min(1,"at least 1 step")
+              .required('required'),
         details: Yup.string()
-            .required("please provide details")
+            
       })}
       onSubmit={async  (values, { setSubmitting }) => {
         setSubmitting(false);
