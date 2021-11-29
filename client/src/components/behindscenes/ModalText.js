@@ -12,7 +12,10 @@ function ModalText(props) {
     const {activeMenu}=props
     
     function renderText(){
-        const {page} = props
+       let {page} = props
+        if(!page){
+            page=modalConstants.pages.landing
+        }
         
         const setHeaders = ()=>{
             let headers=[]

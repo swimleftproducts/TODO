@@ -7,7 +7,7 @@ import {modalConstants} from '../../constants/modalConstants'
 
 function Modal(props) {
     const {general,frontEnd,backEnd}=modalConstants.menu
-
+    
     const [activeMenu,setActiveMenu] = useState(general)
     const [activeMenuClass,setActiveMenuClass]=useState("modal-general")
    
