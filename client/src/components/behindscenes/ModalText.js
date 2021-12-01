@@ -70,11 +70,11 @@ function ModalText(props) {
                     <h4>
                         Hello.
                     </h4>
-                    <h5>
+                    <h5  style={{}}>
                         Thank you for viewing this webapp.
                     </h5>
                     <hr></hr>
-                    <p  style={{ "fontSize": ".8rem"}}>
+                    <p  style={{"fontSize": ".8rem"}}>
                         Throughout the site, the <span style={{"fontStyle": "italic"}}>behind the scenes</span> menu provides insight into the how and why. 
                      </p>  
                      <p  style={{ "fontSize": ".8rem"}}> 
@@ -83,7 +83,7 @@ function ModalText(props) {
                     <p  style={{ "fontSize": ".8rem"}}>
                         -Eric
                     </p>
-                    <p  style={{"backgroundColor":"white","transform":"translate(0px,-10px)","fontSize":".8rem", "textAlign":"center","fontStyle": "italic","height":"45px","lineHeight":"45px"}}>
+                    <p  style={{"backgroundColor":"white","transform":"translate(0px,-10px)","fontSize":".8rem", "textAlign":"center","fontStyle": "italic","height":"25px","lineHeight":"25px"}}>
                         <span  >click for overview</span>
                     </p>
                 </div>

@@ -21,7 +21,7 @@ import { modalConstants } from '../constants/modalConstants';
 
 const App =  (props) => {
    const[remainingInfo,setRemainingInfo]=useState('') 
-
+   const[fadeInId,setFadeInId]=useState()
    const {error}= props
    const {show}=props.modal
 
@@ -38,18 +38,23 @@ const App =  (props) => {
         props.isAuthenticated()
         
       // for transitioning in text after behind scenes slider expands 
+      
       if(show){
-        setTimeout(() => {
-          const {visited}=props.modal
+        const fadeIn =()=>setTimeout(() => {
+          console.log('in time out')
+         const {visited}=props.modal
           const totalVisited = [...new Set(visited)]
           let remaining = `${totalVisited.length}/9 details read`   
-          setRemainingInfo(
-            <div className="hints-remaining">
-              {remaining}
-           </div>
-         )
-        },500)
+         setRemainingInfo(
+          <div className="hints-remaining">
+           {remaining}
+            </div>
+          )
+        },750)
+        setFadeInId(fadeIn())
+        
       }else{
+        clearTimeout(fadeInId)
         setRemainingInfo("")
       }
 
