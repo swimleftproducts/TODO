@@ -41,7 +41,8 @@ const App =  (props) => {
       if(show){
         setTimeout(() => {
           const {visited}=props.modal
-          let remaining = `${visited.length}/9 details read`   
+          const totalVisited = [...new Set(visited)]
+          let remaining = `${totalVisited.length}/9 details read`   
           setRemainingInfo(
             <div className="hints-remaining">
               {remaining}

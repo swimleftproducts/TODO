@@ -24,11 +24,11 @@ function ModalText(props) {
                 headers[1]="Functionality"
                 headers[2]="Future Improvements"
             }else if(activeMenu===frontEnd){
-                headers[0]="General Component Hierarcy"
+                headers[0]="General Component Hierarchy"
                 headers[1]="Redux and Other Notes"
                 headers[2]="Future Improvements"
             }else if(activeMenu===backEnd){
-                headers[0]="Api Calls"
+                headers[0]="API Calls"
                 headers[1]="Database Notes"
                 headers[2]="Future Improvements"
             }
@@ -78,10 +78,10 @@ function ModalText(props) {
                         Throughout the site, the <span style={{"fontStyle": "italic"}}>behind the scenes</span> menu provides insight into the how and why. 
                      </p>  
                      <p  style={{ "fontSize": ".8rem"}}> 
-                       A website feature/page is listed at the top of the general tab. The info in the menu refers to this feature/page.
+                       A website feature/page is listed at the top of the general tab. The info in the menu refers to this feature/page. Enjoy!
                     </p>
                     <p  style={{ "fontSize": ".8rem"}}>
-                        Enjoy,  Eric
+                        -Eric
                     </p>
                     <p  style={{"backgroundColor":"white","transform":"translate(0px,-10px)","fontSize":".8rem", "textAlign":"center","fontStyle": "italic","height":"45px","lineHeight":"45px"}}>
                         <span  >click for overview</span>
@@ -104,10 +104,10 @@ function ModalText(props) {
                    <p style={{ "fontSize": ".8rem"}}>
                    A mockup of the site and backend design is found at <a target='blank' href='https://www.figma.com/file/v1xS2diPQ2GG9csYFl87Ti/Untitled?node-id=0%3A1'>figma</a>. 
                    </p>
-                   <p style={{ "fontSize": ".8rem"}}>TODO is based on the insight that images are more memerable and complex than words.This todo app foremost uses images to represent todos.
+                   <p style={{ "fontSize": ".8rem"}}>TODO is based on the insight that images are more memorable and complex than words. This todo application primarily uses images to represent todos.
                     </p>
                     <p style={{ "fontSize": ".8rem"}}>
-                   A TODO user can create, edit, progress through, sort and delete a list of todos
+                   A TODO user can create, edit, progress through, sort and delete a list of todos.
                    </p>
                     <hr></hr>
                     
